@@ -10,18 +10,20 @@ const requestListener = (request, response) => {
   const { method, url } = request;
 
   response.setHeader("Content-Type", "text/html");
-  response.statusCode = 200;
 
   if (url === "/") {
     if (method === "GET") {
+      response.statusCode = 200;
       response.end("<h1>Ini adalah homepage</h1>");
     } else {
+      response.statusCode = 400;
       response.end(
         `<h1>Halaman tidak dapat diakses menggunakan ${method} request</h1>`
       );
     }
   } else if (url === "/about") {
     if (method === "GET") {
+      response.statusCode = 200;
       response.end("<h1>Halo! Ini adalah halaman about</h1>");
     } else if (method === "POST") {
       let body = [];
@@ -30,17 +32,20 @@ const requestListener = (request, response) => {
         body.push(chunk);
       });
 
-      request.on("end", (chunk) => {
+      request.on("end", () => {
         body = Buffer.concat(body).toString();
         const { name } = JSON.parse(body);
+        response.statusCode = 200;
         response.end(`Halo, ${name}! Ini adalah halaman about`);
       });
     } else {
+      response.statusCode = 400;
       response.end(
         `<h1>Halaman tidak dapat diakses menggunakan ${method} request</h1>`
       );
     }
   } else {
+    response.statusCode = 404;
     response.end("<h1>Halaman tidak ditemukan!</h1>");
   }
 };

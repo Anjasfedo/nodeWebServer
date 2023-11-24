@@ -9,7 +9,8 @@ const http = require("http");
 const requestListener = (request, response) => {
   const { method, url } = request;
 
-  response.setHeader("Content-Type", "text/html");
+  response.setHeader('Content-Type', 'application/json');
+  response.setHeader('X-Powered-By', 'NodeJS');
 
   if (url === "/") {
     if (method === "GET") {
